@@ -10,7 +10,14 @@ if ($connection->connect_error){
     die('Connection failed!'.$connection->connect_error);
 }
 //echo 'Successfully Connected';
-//Create databaseunior
+//SQL to create a table
+$sql = "CREATE TABLE MyClients(
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30)NOT NULL,
+    email VARCHAR(50),
+    reg_date TIMESTAMP
+) ";
 
 $sql = "CREATE DATABASE my_api";
 //check connection

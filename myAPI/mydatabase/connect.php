@@ -13,13 +13,16 @@ if ($connection->connect_error){
 //SQL to create a table
 $sql = "CREATE TABLE MyClients(
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
     firstname VARCHAR(30) NOT NULL,
-    lastname VARCHAR(30)NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
     email VARCHAR(50),
+    jobtitle VARCHAR(50) NOT NULL,
     reg_date TIMESTAMP
 ) ";
-
-$sql = "CREATE DATABASE my_api";
+//insert data to the table
+$sql = "INSERT INTO MyClients (firstname, lastname, email, jobtitle)
+VALUES('Me','You','ze@yahoo.com','dev')";
 //check connection
 if ($connection->query($sql) === TRUE){
     echo "Database Created";

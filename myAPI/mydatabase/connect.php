@@ -1,35 +1,44 @@
 <?php
-//declare variables
-$servername = 'localhost';
-$username = 'username';
-$password = 'password';
-//connect to database
-$connection = new mysqli($servername, $username, $password);//creates new connection to the server
-//Check connection
-if ($connection->connect_error){
-    die('Connection failed!'.$connection->connect_error);
-}
-//echo 'Successfully Connected';
-//SQL to create a table
-$sql = "CREATE TABLE MyClients(
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+request 'notes.sql';
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$database_name = "Notes_Database";
+$title = preg_replace( "#[^\w]#", "", $_POST['firstname'] );
+$notes = preg_replace( "#[^\w]#", "", $_POST['lastname'] ); 
+$author = preg_replace( "#[^\w]#", "", $_POST['lastname'] ); 
 
-    firstname VARCHAR(30) NOT NULL,
-    lastname VARCHAR(30) NOT NULL,
-    email VARCHAR(50),
-    jobtitle VARCHAR(50) NOT NULL,
-    reg_date TIMESTAMP
-) ";
-//insert data to the table
-$sql = "INSERT INTO MyClients (firstname, lastname, email, jobtitle)
-VALUES('Me','You','ze@yahoo.com','dev')";
-//check connection
-if ($connection->query($sql) === TRUE){
-    echo "Database Created";
+// Create connection
+$conn = new mysqli($servername, $username, $password, $database_name);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+/*SQL Database*/
+$sql= "CREATE DATABASE IF NOT EXISTS Notes_Database";
+$sql = "CREATE TABLE Notes_Table (
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        Title VARCHAR(100) NOT NULL UNIQUE,
+        Notes VARCHAR(max) NOT NULL,
+        Author  VARCHAR(100) NOT NULL
+    )ENGINE=InnoDB DEFAULT CHARSET=latin1";
+// prepare and bind
+$sql = $conn->prepare("INSERT INTO Notes_table (Title, Notes,  Author) VALUES (?, ?, ?)");
+$sql->bind_param("sss", $title, $notes, $author);//siss s->string & i->integer
+
+// set parameters and execute
+
+
+
+echo "New records created successfully";
+
+$stmt->close();
+
+if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
 } else {
-    echo "Error creating database: ".$connection->error;
+    echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
-$connection->close();
-
+$conn->close();
 ?>
